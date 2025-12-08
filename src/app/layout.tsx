@@ -2,21 +2,17 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 const interSans = Inter({
-  variable: "--font-inter-sans",
+	variable: "--font-inter-sans",
 });
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${interSans.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className={`${interSans.variable} antialiased`}>{children}</body>
+		</html>
+	);
 }

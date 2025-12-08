@@ -13,7 +13,9 @@ export const postsRoutes = new Elysia({
 		return await db.select().from(posts);
 	})
 
-	.post("/", async ({ body }) => {
+	.post(
+		"/",
+		async ({ body }) => {
 			return await db.insert(posts).values(body).returning();
 		},
 		{
@@ -25,16 +27,24 @@ export const postsRoutes = new Elysia({
 		},
 	)
 
-	.put('/:id', async ({params, body}) => {
-		return await db.update(posts).set(body).where(eq(posts.id, params.id)).returning()
-	}, {
-		body: z.object({
-			title: z.string(),
-			name: z.string(),
-			description: z.string()
-		})} 
+	.put(
+		"/:id",
+		async ({ params, body }) => {
+			return await db
+				.update(posts)
+				.set(body)
+				.where(eq(posts.id, params.id))
+				.returning();
+		},
+		{
+			body: z.object({
+				title: z.string(),
+				name: z.string(),
+				description: z.string(),
+			}),
+		},
 	)
 
-	.delete('/:id', async ({params}) => {
-		await db.delete(posts).where(eq(posts.id, params.id))
-	})
+	.delete("/:id", async ({ params }) => {
+		await db.delete(posts).where(eq(posts.id, params.id));
+	});

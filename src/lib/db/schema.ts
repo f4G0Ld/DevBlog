@@ -1,65 +1,54 @@
-// import { relations } from 'drizzle-orm'
-import * as pg from 'drizzle-orm/pg-core'
+import { relations } from "drizzle-orm";
+import * as pg from "drizzle-orm/pg-core";
 
-export const posts = pg.pgTable('posts', {
-    id: pg
-    .varchar({length:255})
-    .notNull()
-    .primaryKey()
-    .$defaultFn(() => Bun.randomUUIDv7()),
+export const posts = pg.pgTable("posts", {
+	id: pg
+		.varchar({ length: 255 })
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => Bun.randomUUIDv7()),
 
-    title: pg
-    .varchar({length:255})
-    .notNull(),
-    
-    name: pg
-    .varchar({length:255})
-    .notNull(),
+	title: pg.varchar({ length: 255 }).notNull(),
 
-    description: pg
-    .text()
-    .notNull(),
+	name: pg.varchar({ length: 255 }).notNull(),
 
-    likes: pg
-    .integer()
-    .default(0),
+	description: pg.text().notNull(),
 
-    comments: pg
-    .integer()
-    .default(0),
+	likes: pg.integer().default(0),
 
-    createdAt: pg
-    .timestamp()
-    .notNull()
-    .defaultNow()
-})
+	comments: pg.integer().default(0),
 
-export const comments = pg.pgTable('comments', {
-    id: pg
-    .varchar({length:255})
-    .notNull()
-    .primaryKey()
-    .$defaultFn(() => Bun.randomUUIDv7()),
+	createdAt: pg.timestamp().notNull().defaultNow(),
+});
 
-    name: pg
-    .text()
-    .notNull(),
+export const postsRelations = relations(posts, ({ many }) => ({
+	comments: many(comments),
+}));
 
-    text: pg
-    .text()
-    .notNull(),
-    
-    postId: pg
-    .varchar({length:255})
-    .notNull()
-    .references(() => posts.id, {onDelete:'cascade', onUpdate:'cascade'}),
+export const comments = pg.pgTable("comments", {
+	id: pg
+		.varchar({ length: 255 })
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => Bun.randomUUIDv7()),
 
-    likes: pg
-    .integer()
-    .default(0),
+	name: pg.text().notNull(),
 
-    createdAt: pg
-    .timestamp()
-    .notNull()
-    .defaultNow(),
-}) 
+	text: pg.text().notNull(),
+
+	postId: pg
+		.varchar({ length: 255 })
+		.notNull()
+		.references(() => posts.id, { onDelete: "cascade", onUpdate: "cascade" }),
+
+	likes: pg.integer().default(0),
+
+	createdAt: pg.timestamp().notNull().defaultNow(),
+});
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+	post: one(posts, {
+		fields: [comments.postId],
+		references: [posts.id],
+	}),
+}));
