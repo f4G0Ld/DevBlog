@@ -64,6 +64,8 @@ export const commentsRoutes = new Elysia({
 	)
 
 	.delete("/:id", async ({ params }) => {
+
+		const [comment]
 		const comment = await db.delete(comments).where(eq(comments.id, params.id));
 
 		await db
