@@ -8,6 +8,4 @@ export const app = new Elysia({
 })
 
 	.use(postsRoutes)
-	.use(commentsRoutes)
-
-	// .listen(3000);
+	.use(commentsRoutes);
