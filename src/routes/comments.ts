@@ -9,15 +9,15 @@ export const commentsRoutes = new Elysia({
 	prefix: "/comments",
 })
 
-	.get("/", async () => {
+	.get("/", async ({ query }) => {
+		if (query?.id) {
+			return await db
+				.select()
+				.from(comments)
+				.where(eq(comments.postId, query.postId))
+				.orderBy(desc(comments.createdAt));
+		}
 		return await db.select().from(comments).orderBy(desc(comments.createdAt));
-	})
-
-	.get("/post/:id", async ({ params }) => {
-		return await db.query.comments.findFirst({
-			where: eq(comments.id, params.id),
-			orderBy: desc(comments.createdAt),
-		});
 	})
 
 	.post(
