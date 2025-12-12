@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { posts } from "../lib/db/schema";
 import { api } from "@/src/lib/api";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import {
 	User,
 	UserCircle,
 } from "lucide-react";
+import { queryClient } from "../app/query-client";
 
 type Post = {
 	id: string;
@@ -54,11 +55,35 @@ export function PostCard({ post }: { post: Post }) {
 		enabled: showComments,
 	});
 
-	const handleLike = async () => {
-		try {
-			await api.posts({ id: post.id }).like.put();
-		} catch (error) {
-			console.error("Like error: ", error);
+	const likeMutation = useMutation({
+		mutationFn: () => api.posts({ id: post.id }).like.put(),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["posts"] });
+		},
+		onError: (error) => {
+			console.error("Like error:", error);
+			alert("Не удалось поставить лайк");
+		},
+	});
+
+	const handleLike = () => {
+		likeMutation.mutate();
+	};
+
+	const deleteMutation = useMutation({
+		mutationFn: () => api.posts({ id: post.id }).delete(),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["posts"] });
+		},
+		onError: (error) => {
+			console.error("Delete error:", error);
+			alert("Не удалось удалить пост");
+		},
+	});
+
+	const handleDelete = () => {
+		if (confirm("Удалить пост?")) {
+			deleteMutation.mutate();
 		}
 	};
 
@@ -85,7 +110,12 @@ export function PostCard({ post }: { post: Post }) {
 						<span className="flex-1 text-[20px] font-semibold">
 							{post.title}
 						</span>
-						<button title="Delete post">
+						<button
+							className="cursor-pointer"
+							title="Delete post"
+							onClick={handleDelete}
+							disabled={deleteMutation.isPending}
+						>
 							<Trash2 className="w-4 h-4 text-[#99A1AF] hover:text-red-500 transition-colors" />
 						</button>
 					</div>
@@ -95,13 +125,21 @@ export function PostCard({ post }: { post: Post }) {
 				</div>
 				<hr className="text-[#4A5565]" />
 				<div className="flex gap-2 items-center">
-					<button className="flex gap-1 hover:text-red-500 transition-colors items-center">
+					<button
+						className="flex gap-1 hover:text-[#FF0000] transition-colors items-center cursor-pointer"
+						title="Like"
+						onClick={handleLike}
+						disabled={likeMutation.isPending}
+					>
 						<Heart className="w-4 h-4" />
-						<p>36</p>
+						<span>{post.likes || 0}</span>
 					</button>
-					<button className="flex gap-1 hover:text-[#155DFC] transition-colors items-center">
+					<button
+						className="flex gap-1 hover:text-[#155DFC] transition-colors items-center cursor-pointer"
+						title="Comment"
+					>
 						<MessageCircle className="w-4 h-4" />
-						<p>1</p>
+						<span>{post.comments || 0}</span>
 					</button>
 				</div>
 			</div>

@@ -3,7 +3,6 @@ CREATE TABLE "comments" (
 	"name" text NOT NULL,
 	"text" text NOT NULL,
 	"postId" varchar(255) NOT NULL,
-	"likes" integer DEFAULT 0,
 	"createdAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
