@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { posts } from "../lib/db/schema";
-import { api } from "@/api";
+import { api } from "@/src/lib/api";
 import { useState } from "react";
 import {
 	Calendar,
@@ -13,7 +13,7 @@ import {
 	UserCircle,
 } from "lucide-react";
 
-type post = {
+type Post = {
 	id: string;
 	title: string;
 	name: string;
@@ -23,7 +23,15 @@ type post = {
 	createdAt: Date;
 };
 
-export function PostCard({ post }: { post: post }) {
+type Comment = {
+	id: string;
+	name: string;
+	text: string;
+	postId: string;
+	createdAt: Date;
+};
+
+export function PostCard({ post }: { post: Post }) {
 	const [showComments, setShowComments] = useState(false);
 
 	const formatDate = new Date(post.createdAt).toLocaleString("en-US", {
@@ -55,7 +63,7 @@ export function PostCard({ post }: { post: post }) {
 	};
 
 	return (
-		<div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow container">
+		<div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow max-w-4xl mx-auto w-full">
 			<div className="flex flex-col gap-5 p-6 text-sm">
 				<div className="flex items-center gap-4">
 					<div className="w-10 h-10 rounded-full bg-[#DBEAFE] flex items-center justify-center">
@@ -72,7 +80,7 @@ export function PostCard({ post }: { post: post }) {
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col gap-3">
+				<div className="flex flex-col gap-2">
 					<div className="flex justify-between items-center">
 						<span className="flex-1 text-[20px] font-semibold">
 							{post.title}
@@ -86,12 +94,14 @@ export function PostCard({ post }: { post: post }) {
 					</div>
 				</div>
 				<hr className="text-[#4A5565]" />
-				<div>
-					<button>
-						<Heart className="w-4 h-4 hover:text-red-500 transition-colors" />
+				<div className="flex gap-2 items-center">
+					<button className="flex gap-1 hover:text-red-500 transition-colors items-center">
+						<Heart className="w-4 h-4" />
+						<p>36</p>
 					</button>
-					<button>
-						<MessageCircle className="w-4 h-4 hover:text-[#155DFC] transition-colors" />
+					<button className="flex gap-1 hover:text-[#155DFC] transition-colors items-center">
+						<MessageCircle className="w-4 h-4" />
+						<p>1</p>
 					</button>
 				</div>
 			</div>

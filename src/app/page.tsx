@@ -1,8 +1,8 @@
 "use client";
-import { api } from "@/api";
+import { api } from "@/src/lib/api";
 import Header from "@/src/components/header";
 import { useQuery } from "@tanstack/react-query";
-import { PostCard } from "./posts";
+import { PostCard } from "../components/posts";
 
 export default function Main() {
 	const { data: posts, isLoading } = useQuery({
@@ -14,14 +14,11 @@ export default function Main() {
 		},
 	});
 
-	
-	
-
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex flex-col items-center gap-8">
 			<Header />
 			{posts?.map((p) => (
-				<PostCard key={p.id} post={p}/>
+				<PostCard key={p.id} post={p} />
 			))}
 		</div>
 	);
