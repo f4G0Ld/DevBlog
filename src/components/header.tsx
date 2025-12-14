@@ -75,18 +75,13 @@ function CreatePost() {
 	return (
 		<div>
 			<Dialog>
-				<DialogTrigger asChild>
-					<button
-						type="button"
-						className="flex items-center px-3.5 py-1.75 gap-2 bg-[#155DFC] rounded-lg text-white"
-					>
-						<Plus className="w-4 h-4" />
-						<p>Create Post</p>
-					</button>
+				<DialogTrigger className="flex items-center px-3.5 py-1.75 gap-2 bg-[#155DFC] rounded-lg text-white cursor-pointer">
+					<Plus className="w-4 h-4" />
+					<p>Create Post</p>
 				</DialogTrigger>
-				<DialogContent>
+				<DialogContent className="flex flex-col gap-10">
 					<DialogHeader>
-						<DialogTitle>Создание поста</DialogTitle>
+						<DialogTitle>Create New Post</DialogTitle>
 					</DialogHeader>
 					<form
 						onSubmit={(e) => {
@@ -95,19 +90,19 @@ function CreatePost() {
 						}}
 						className="flex flex-col gap-5"
 					>
-						<Field name="title">
+						<Field name="name">
 							{(f) => (
 								<div className="flex flex-col gap-2">
 									<div className="flex gap-2 items-center">
-										<Type size={16} color="#155DFC" />
-										<p className="leading-none">1. Add Title</p>
+										<User size={16} color="#155DFC" />
+										<p>1. Add Name</p>
 									</div>
 									<input
-										className="outline-1 rounded-md py-2 px-3 focus:outline-[#155DFC]"
+										type="text"
 										value={f.state.value}
 										onChange={(e) => f.handleChange(e.target.value)}
-										type="text"
-										placeholder="Enter post title"
+										placeholder="Enter author name"
+										className="outline-1 rounded-md py-2 px-3 focus:outline-[#155DFC]"
 									></input>
 									{f.state.meta.errors.map((error) => (
 										<p className="text-[#FF0000]" key={error?.message}>
@@ -117,19 +112,19 @@ function CreatePost() {
 								</div>
 							)}
 						</Field>
-						<Field name="name">
+						<Field name="title">
 							{(f) => (
 								<div className="flex flex-col gap-2">
 									<div className="flex gap-2 items-center">
-										<User size={16} color="#155DFC" />
-										<p>2. Add Name</p>
+										<Type size={16} color="#155DFC" />
+										<p className="leading-none">2. Add Title</p>
 									</div>
 									<input
-										type="text"
+										className="outline-1 rounded-md py-2 px-3 focus:outline-[#155DFC]"
 										value={f.state.value}
 										onChange={(e) => f.handleChange(e.target.value)}
-										placeholder="Enter author name"
-										className="outline-1 rounded-md py-2 px-3 focus:outline-[#155DFC]"
+										type="text"
+										placeholder="Enter post title"
 									></input>
 									{f.state.meta.errors.map((error) => (
 										<p className="text-[#FF0000]" key={error?.message}>
@@ -161,12 +156,12 @@ function CreatePost() {
 							)}
 						</Field>
 						<div className="flex gap-2">
-							<DialogClose className="border-2 py-2 rounded-lg w-full">
+							<DialogClose className="border-2 py-2 rounded-lg w-full cursor-pointer">
 								<p>Cancel</p>
 							</DialogClose>
 							<button
 								type="submit"
-								className="bg-[#155DFC] py-2 rounded-lg w-full"
+								className="bg-[#155DFC] py-2 rounded-lg w-full cursor-pointer"
 							>
 								<p className="text-[#FFFFFF]">Publish Post</p>
 							</button>

@@ -121,7 +121,7 @@ export function PostCard({ post }: { post: Post }) {
 						</button>
 					</div>
 					<div>
-						<span className="text-[#4A5565]">{post.description}</span>
+						<span className="text-[#4A5565] whitespace-pre-line">{post.description}</span>
 					</div>
 				</div>
 				<hr className="text-[#4A5565]" />
