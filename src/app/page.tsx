@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PostCard } from "../components/posts";
 
 export default function Main() {
-	const { data: posts, isLoading } = useQuery({
+	const { data: posts } = useQuery({
 		queryKey: ["posts"],
 		queryFn: async () => {
 			const { data, error } = await api.posts.get();
