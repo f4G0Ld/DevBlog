@@ -18,7 +18,7 @@ export const postsRoutes = new Elysia({
 	.get("/:id", async ({ params }) => {
 		return await db.query.posts.findFirst({
 			where: eq(posts.id, params.id),
-			orderBy: desc(posts.createdAt),
+			// orderBy: desc(posts.createdAt),
 		});
 	})
 
